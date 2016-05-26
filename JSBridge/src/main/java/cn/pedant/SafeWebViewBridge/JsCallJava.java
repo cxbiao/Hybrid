@@ -1,10 +1,10 @@
 package cn.pedant.SafeWebViewBridge;
 
 import android.text.TextUtils;
-import android.webkit.WebView;
 import android.util.Log;
+import android.webkit.WebView;
 
-import com.google.gson.Gson;
+import com.bluelinelabs.logansquare.LoganSquare;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +22,6 @@ public class JsCallJava {
 
     public static final int RESULT_SUCCESS=200;
     public static final int RESULT_FAIL=500;
-    private Gson mGson;
 
     public JsCallJava (String injectedName, Class injectedCls) {
         try {
@@ -171,7 +170,7 @@ public class JsCallJava {
     }
 
     private String getReturn (String reqJson, int stateCode, Object result) {
-        String insertRes;
+        String insertRes="";
         if (result == null) {
             insertRes = "null";
         } else if (result instanceof String) {
@@ -183,10 +182,12 @@ public class JsCallJava {
                 && !(result instanceof Float)
                 && !(result instanceof Double)
                 && !(result instanceof JSONObject)) {    // 非数字或者非字符串的构造对象类型都要序列化后再拼接
-            if (mGson == null) {
-                mGson = new Gson();
+
+            try {
+                insertRes = LoganSquare.serialize(result);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            insertRes = mGson.toJson(result);
         } else {  //数字直接转化
             insertRes = String.valueOf(result);
         }

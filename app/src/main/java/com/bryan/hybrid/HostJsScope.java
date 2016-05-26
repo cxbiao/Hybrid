@@ -17,6 +17,7 @@ import android.telephony.TelephonyManager;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.bluelinelabs.logansquare.annotation.JsonObject;
 import com.bryan.hybrid.util.TaskExecutor;
 
 import org.json.JSONException;
@@ -160,6 +161,7 @@ public class HostJsScope {
         return val;
     }
 
+    @JsonObject(fieldDetectionPolicy = JsonObject.FieldDetectionPolicy.NONPRIVATE_FIELDS)
     public static class RetJavaObj {
         public int intField;
         public String strField;
