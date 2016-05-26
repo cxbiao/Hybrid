@@ -1,26 +1,37 @@
 package com.bryan.hybrid;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import cn.pedant.SafeWebViewBridge.InjectedChromeClient;
+import cn.pedant.SafeWebViewBridge.NavWebViewClient;
 
-public class WebActivity extends Activity {
+public class WebActivity extends AppCompatActivity {
+
+    WebView webView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WebView wv = new WebView(this);
-        setContentView(wv);
-        WebSettings ws = wv.getSettings();
-        ws.setJavaScriptEnabled(true);
-        wv.setWebChromeClient(
-            new CustomChromeClient("HostApp", HostJsScope.class)
-        );
-        wv.loadUrl("file:///android_asset/test.html");
+        setContentView(R.layout.activity_main);
+        webView= (WebView) findViewById(R.id.webview);
+        webView.setWebChromeClient(new CustomChromeClient("HostApp", HostJsScope.class));
+        webView.setWebViewClient(new NavWebViewClient("bryan"));
+        webView.loadUrl("file:///android_asset/test.html");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(event.getAction()==KeyEvent.ACTION_DOWN && keyCode==KeyEvent.KEYCODE_BACK && webView.canGoBack()){
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public class CustomChromeClient extends InjectedChromeClient {

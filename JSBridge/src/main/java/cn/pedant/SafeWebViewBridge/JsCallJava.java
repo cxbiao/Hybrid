@@ -19,6 +19,9 @@ public class JsCallJava {
     private HashMap<String, Method> mMethodsMap;
     private String mInjectedName;
     private String mPreloadInterfaceJS;
+
+    public static final int RESULT_SUCCESS=200;
+    public static final int RESULT_FAIL=500;
     private Gson mGson;
 
     public JsCallJava (String injectedName, Class injectedCls) {
@@ -154,16 +157,16 @@ public class JsCallJava {
                     }
                 }
 
-                return getReturn(jsonStr, 200, currMethod.invoke(null, values));
+                return getReturn(jsonStr, RESULT_SUCCESS, currMethod.invoke(null, values));
             } catch (Exception e) {
                 //优先返回详细的错误信息
                 if (e.getCause() != null) {
-                    return getReturn(jsonStr, 500, "method execute error:" + e.getCause().getMessage());
+                    return getReturn(jsonStr, RESULT_FAIL, "method execute error:" + e.getCause().getMessage());
                 }
-                return getReturn(jsonStr, 500, "method execute error:" + e.getMessage());
+                return getReturn(jsonStr, RESULT_FAIL, "method execute error:" + e.getMessage());
             }
         } else {
-            return getReturn(jsonStr, 500, "call data empty");
+            return getReturn(jsonStr, RESULT_FAIL, "call data empty");
         }
     }
 

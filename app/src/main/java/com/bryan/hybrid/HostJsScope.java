@@ -82,9 +82,6 @@ public class HostJsScope {
     }
 
 
-    public static void aabc (WebView webView, int msg) {
-        alert(webView, String.valueOf(msg));
-    }
 
 
     public static void alert (WebView webView, int msg) {
