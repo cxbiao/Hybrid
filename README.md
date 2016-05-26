@@ -1,2 +1,2 @@
-# hybrid
+# Hybrid
 hybrid app framework
