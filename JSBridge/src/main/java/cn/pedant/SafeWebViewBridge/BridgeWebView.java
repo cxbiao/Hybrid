@@ -34,4 +34,9 @@ public class BridgeWebView extends WebView {
         //开启 Application Caches 功能
         getSettings().setAppCacheEnabled(true);
     }
+
+
+    public void executeJs(String js){
+        loadUrl("javascript:"+js);
+    }
 }
